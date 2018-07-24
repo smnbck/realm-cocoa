@@ -207,15 +207,15 @@ static void waitForPartialSyncSubscriptions(Realm::Config const& config) {
     auto table = ObjectStore::table_for_object_type(realm->read_group(), "__ResultSets");
 
     realm->begin_transaction();
-    size_t row = realm::sync::create_object(realm->read_group(), *table);
+    auto row = realm::sync::create_object(realm->transaction(), *table);
 
     // Set expires_at to time 0 so that this object will be cleaned up the first
     // time the user creates a subscription
-    size_t expires_at_col = table->get_column_index("expires_at");
-    if (expires_at_col == npos) {
+    auto expires_at_col = table->get_column_key("expires_at");
+    if (!expires_at_col) {
         expires_at_col = table->add_column(type_Timestamp, "expires_at", true);
     }
-    table->set_timestamp(expires_at_col, row, Timestamp(0, 0));
+    row.set(expires_at_col, Timestamp(0, 0));
     realm->commit_transaction();
 
     NotificationToken token;
@@ -244,7 +244,7 @@ void RLMSetAsyncOpenQueue(dispatch_queue_t queue) {
 + (RLMAsyncOpenTask *)asyncOpenWithConfiguration:(RLMRealmConfiguration *)configuration
                                    callbackQueue:(dispatch_queue_t)callbackQueue
                                         callback:(RLMAsyncOpenRealmCallback)callback {
-    auto openCompletion = [=](ThreadSafeReference<Realm> ref, std::exception_ptr err) {
+    auto openCompletion = [=](ThreadSafeReference ref, std::exception_ptr err) {
         @autoreleasepool {
             if (err) {
                 try {

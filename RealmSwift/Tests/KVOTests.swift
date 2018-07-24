@@ -244,6 +244,7 @@ class KVOTests: TestCase {
             return
         }
 
+        #if false
         observeChange(obs, "invalidated", false, true) {
             self.realm.delete(obj)
         }
@@ -252,6 +253,7 @@ class KVOTests: TestCase {
         observeChange(obs2, "arrayCol.invalidated", false, true) {
             self.realm.delete(obj2)
         }
+        #endif
     }
 
     func testTypedObservation() {
