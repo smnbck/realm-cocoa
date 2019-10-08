@@ -1,7 +1,7 @@
 x.y.z Release notes (yyyy-MM-dd)
 =============================================================
 
-### Breaking Changes - ONLY INCLUDE FOR NEW MAJOR version
+### Breaking Changes
 * All previously deprecated functionality has now been removed entirely.
 * The schema discovery logic for RealmSwift.Object subclasses has been
   rewritten in Swift. This should not have any effect on valid class
