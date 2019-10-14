@@ -44,7 +44,7 @@ let package = Package(
       .target(
             name: "Realm",
             dependencies: ["RealmCore"],
-            path: ".",
+            path: "Realm",
             exclude: [
                 "Realm/NSError+RLMSync.m",
                 "Realm/RLMJSONModels.m",
